@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html dir='ltr' lang='en-US'>
+<head>
+<meta content='width=device-width,minimum-scale=1,initial-scale=1' name='viewport'/>
+<meta charset='utf-8' />
+<title>Related Post</title>
+<style>
+/* Related Post v1.0 by Detro.xyz */
+body{font-size:95%;color:#555;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif;line-height:20px}
+a:link{color:#555;text-decoration:none;outline:none;transition:0.3s}
+a:visited{color:#555;}
+a:hover{color:#00aaff;}
+#detroRelated{display:grid;grid-gap:15px 10px;grid-template-columns:auto auto auto;overflow:hidden}
+.relcontent{overflow:hidden;display:block;width:100%}
+.subcontent{overflow:hidden;display:block;width:100%}
+.subcontent img{width:100%;display:block;transition:0.3s;margin-bottom:7px}
+.subcontent img:hover{opacity:.8}
+.subcontent .reltitle{display:block;width:100%;overflow:hidden;margin:0px;font-weight:600}
+@media screen and (max-width:480px){
+body{font-size:85%}
+#detroRelated{grid-template-columns:auto auto}
+.subcontent .reltitle{font-weight:400;text-align:center}
+}
+</style>
+</head>
+<body>
+<div id='detroRelated'>
+<script>
+function getQueryVariable(r) {
+for (var l = window.location.search.substring(1).split("&"), e = 0; e < l.length; e++) {
+var t = l[e].split("=");
+if (t[0] == r) return t[1]
+}
+return !1
+}
+function saringtags(r, l) {
+for (var e = r.split("<"), t = 0; t < e.length; t++) - 1 != e[t].indexOf(">") && (e[t] = e[t].substring(e[t].indexOf(">") + 1, e[t].length));
+return e = e.join(""), e = e.substring(0, l - 1)
+}
+var simg = getQueryVariable("si"),
+rsimg = (simg == false) ? "/s1600/" : "/" + simg + "/";
+function postfeeds(r) {
+for (var l = 0; l < r.feed.entry.length; l++) {
+var e = r.feed.entry[l];
+reltitle[relnotitle] = e.title.$t, postcontent = "", "content" in e ? postcontent = e.content.$t : "summary" in e && (postcontent = e.summary.$t), relsummary[relnotitle] = saringtags(postcontent, numchars), postimg = "media$thumbnail" in e ? e.media$thumbnail.url.replace(/.*?:\/\//g, "//").replace(/\/s[0-9]+(\-c)?/, "/w185-h97-p-k-no-nu") : "https://lh3.googleusercontent.com/-VyIOQ7y3ra4/XndhmvMmy3I/AAAAAAAAAIs/PrHHjI6cRAYtkEEvCxeXLoLXHpB11GgzQCLcBGAsYHQ/s1600/detro-default-image.png", relimg[relnotitle] = postimg;
+for (var t = 0; t < e.link.length; t++)
+if ("alternate" == e.link[t].rel) {
+relurls[relnotitle] = e.link[t].href;
+break
+}
+relnotitle++
+}
+}
+function contains(r, l) {
+for (var e = 0; e < r.length; e++)
+if (r[e] == l) return !0;
+return !1
+}
+function detrorelated() {
+for (var r = new Array(0), l = new Array(0), e = new Array(0), t = new Array(0), a = 0; a < relurls.length; a++) contains(r, relurls[a]) || (r.length += 1, r[r.length - 1] = relurls[a], l.length += 1, l[l.length - 1] = reltitle[a], e.length += 1, e[e.length - 1] = relsummary[a], t.length += 1, t[t.length - 1] = relimg[a]);
+for (reltitle = l, relurls = r, relsummary = e, relimg = t, a = 0; a < reltitle.length; a++) {
+var n = Math.floor((reltitle.length - 1) * Math.random()),
+u = reltitle[a],
+i = relurls[a],
+s = relsummary[a],
+o = relimg[a];
+reltitle[a] = reltitle[n], relurls[a] = relurls[n], relsummary[a] = relsummary[n], relimg[a] = relimg[n], reltitle[n] = u, relurls[n] = i, relsummary[n] = s, relimg[n] = o
+}
+for (var g, c = 0, p = Math.floor((reltitle.length - 1) * Math.random()), m = p, d = getQueryVariable("pos"); c < postshow && (relurls[p] == d || (g = "<div class='relcontent'>", g += "<div class='subcontent'><a href='" + relurls[p] + "' rel='noopener' target='_blank' title='" + reltitle[p] + "'><img alt='" + reltitle[p] + "' src='" + relimg[p] + "' /><span class='reltitle'>" + reltitle[p] + "</span></a></div>", g += "</div>", document.write(g), ++c != postshow)) && (p < reltitle.length - 1 ? p++ : p = 0, p != m););
+}
+for (var labels = getQueryVariable("labels"), postshow = getQueryVariable("num"), url = getQueryVariable("url"), res = labels.split(","), i = 0, text = ""; res[i];) text += '<script src="' + url + "/feeds/posts/default/-/" + res[i] + '?alt=json&amp;callback=postfeeds&amp;max-results=50"><\/script>', i++;
+var relnotitle = 0,
+numchars = 65,
+reltitle = new Array,
+relurls = new Array,
+relsummary = new Array,
+relimg = new Array;
+document.write(text + '<script>detrorelated();<\/script>');
+</script>
+</div>
+</body>
+</html>
